@@ -23,6 +23,9 @@
  *
  * Revision history:
  * $Log$
+ * Revision 1.2  1999/05/19 23:58:37  norris%netscape.com
+ * Remove Java 2 dependency.
+ *
  * Revision 1.1  1999/05/18 22:32:25  norris%netscape.com
  * Add submission:
  * Subject:
@@ -132,7 +135,9 @@ public class ListenerCollection extends Vector {
                 array.addElement(listener);
             }
         }
-        return array.toArray();
+        Object[] result = new Object[array.size()];
+        array.copyInto(result);
+        return result;
     }
 } // ListenerCollection
 
