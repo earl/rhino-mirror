@@ -38,6 +38,7 @@ package org.mozilla.javascript;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.security.ProtectionDomain;
 
 /**
  * @author Attila Szegedi
@@ -61,5 +62,17 @@ public class SecurityUtilities
                     return System.getProperty(name);
                 }
             });
+    }
+    
+    public static ProtectionDomain getProtectionDomain(final Class clazz)
+    {
+        return (ProtectionDomain)AccessController.doPrivileged(
+                new PrivilegedAction()
+                {
+                    public Object run()
+                    {
+                        return clazz.getProtectionDomain();
+                    }
+                });
     }
 }
