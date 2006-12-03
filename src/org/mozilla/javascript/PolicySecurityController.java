@@ -190,6 +190,12 @@ public class PolicySecurityController extends SecurityController
         ClassFileWriter cfw = new ClassFileWriter(
                 secureCallerClassName + "Impl", secureCallerClassName, 
                 "<generated>");
+        cfw.startMethod("<init>", "()V", ClassFileWriter.ACC_PUBLIC);
+        cfw.addALoad(0);
+        cfw.addInvoke(ByteCode.INVOKESPECIAL, secureCallerClassName, 
+                "<init>", "()V");
+        cfw.add(ByteCode.RETURN);
+        cfw.stopMethod((short)1);
         String callableCallSig = 
             "Lorg/mozilla/javascript/Context;" +
             "Lorg/mozilla/javascript/Scriptable;" +
