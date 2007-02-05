@@ -45,7 +45,6 @@ import java.security.ProtectionDomain;
 
 /**
  * @author Attila Szegedi
- * @version $Id$
  */
 public class SecurityUtilities
 {

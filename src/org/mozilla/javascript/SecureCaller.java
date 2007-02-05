@@ -51,7 +51,6 @@ import java.util.WeakHashMap;
 
 /**
  * @author Attila Szegedi
- * @version $Id$
  */
 public abstract class SecureCaller
 {
