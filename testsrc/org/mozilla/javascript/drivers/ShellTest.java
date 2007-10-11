@@ -42,6 +42,9 @@ import java.util.*;
 
 import org.mozilla.javascript.tools.shell.*;
 
+/**
+ * @version $Id$
+ */
 class ShellTest {
     static final FileFilter DIRECTORY_FILTER = new FileFilter() {
         public boolean accept(File pathname)
