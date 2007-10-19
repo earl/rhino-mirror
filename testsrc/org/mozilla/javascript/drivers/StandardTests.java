@@ -83,7 +83,7 @@ public class StandardTests extends TestSuite
         Properties excludes = new Properties();
         loadExcludes(excludes, "/base.skip");
         Properties opt1Excludes = new Properties(excludes);
-        loadExcludes(excludes, "/opt1.skip");
+        loadExcludes(opt1Excludes, "/opt1.skip");
 
         for(int i = -1; i < 2; ++i)
         {
