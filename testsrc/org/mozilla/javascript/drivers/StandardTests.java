@@ -82,9 +82,9 @@ public class StandardTests extends TestSuite
         }
         Properties excludes = new Properties();
         loadExcludes(excludes, "/base.skip");
-        Properties opt1Excludes = new Properties(excludes);
+        Properties opt1Excludes = new Properties();
         loadExcludes(opt1Excludes, "/opt1.skip");
-
+        opt1Excludes.putAll(excludes);
         for(int i = -1; i < 2; ++i)
         {
             TestSuite optimizationLevelSuite = new TestSuite("Optimization level " + i);
@@ -143,11 +143,10 @@ public class StandardTests extends TestSuite
         {
             File jsFile = jsFiles[i];
             String name = jsFile.getName();
-            if(excludes.containsKey(prefix + name))
+            if(!excludes.containsKey(prefix + name))
             {
-                continue;
+                suite.addTest(new JsTestCase(jsFile, optimizationLevel));
             }
-            suite.addTest(new JsTestCase(jsFile, optimizationLevel));
         }
     }
 
