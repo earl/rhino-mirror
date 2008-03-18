@@ -222,7 +222,7 @@ class ShellTest {
 
     private static class ErrorReporterWrapper implements ErrorReporter {
         private ErrorReporter original;
-        private ArrayList errors = new ArrayList();
+        private ArrayList<Status.JsError> errors = new ArrayList<Status.JsError>();
 
         ErrorReporterWrapper(ErrorReporter original) {
             this.original = original;
