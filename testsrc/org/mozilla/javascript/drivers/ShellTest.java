@@ -177,7 +177,12 @@ class ShellTest {
 
             @Override
             public String toString() {
-                String locationLine = sourceName + ":" + line + ": " + message;
+                String locationLine = "";
+                if (sourceName != null)
+                    locationLine += sourceName + ":";
+                if (line != 0)
+                    locationLine += line + ": ";
+                locationLine += message;
                 String sourceLine = this.lineSource;
                 String errCaret = null;
                 if (lineSource != null) {
