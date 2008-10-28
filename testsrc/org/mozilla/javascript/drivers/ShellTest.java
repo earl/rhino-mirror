@@ -36,12 +36,23 @@
 
 package org.mozilla.javascript.drivers;
 
-import org.mozilla.javascript.*;
-import java.io.*;
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.util.ArrayList;
 
-import org.mozilla.javascript.tools.shell.*;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextAction;
+import org.mozilla.javascript.ErrorReporter;
+import org.mozilla.javascript.EvaluatorException;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.tools.shell.Global;
+import org.mozilla.javascript.tools.shell.Main;
+import org.mozilla.javascript.tools.shell.ShellContextFactory;
 
 /**
  * @version $Id$
@@ -259,16 +270,7 @@ class ShellTest {
     }
 
     static abstract class Parameters {
-        private UncaughtExceptionHandler exceptionHandler;
         abstract int getTimeoutMilliseconds();
-        
-        UncaughtExceptionHandler getUncaughtExceptionHandler() {
-            return exceptionHandler;
-        }
-        
-        public void setUncaughtExceptionHandler(UncaughtExceptionHandler exceptionHandler) {
-            this.exceptionHandler = exceptionHandler;
-        }
     }
 
     static void run(final ShellContextFactory shellContextFactory, final File jsFile, final Parameters parameters, final Status status) throws Exception {
@@ -281,10 +283,7 @@ class ShellTest {
         if (jsFile.getName().endsWith("-n.js")) {
             status.setNegative();
         }
-        UncaughtExceptionHandler exceptionHandler = parameters.getUncaughtExceptionHandler();
-        if(exceptionHandler != null) {
-            Thread.setDefaultUncaughtExceptionHandler(exceptionHandler);
-        }
+        final Throwable thrown[] = {null};
         
         Thread t = new Thread(new Runnable()
         {
@@ -322,7 +321,16 @@ class ShellTest {
                             return null;
                         }
                     });
-                } finally {
+                }
+                catch (Error t)
+                {
+                    thrown[0] = t;
+                }
+                catch (RuntimeException t)
+                {
+                    thrown[0] = t;
+                }
+                finally {
                     synchronized(testState)
                     {
                         testState.finished = true;
@@ -331,9 +339,6 @@ class ShellTest {
             }
         }, jsFile.getPath());
         t.setDaemon(true);
-        if(exceptionHandler != null) {
-            t.setUncaughtExceptionHandler(exceptionHandler);
-        }
         t.start();
         t.join(parameters.getTimeoutMilliseconds());
         synchronized(testState)
@@ -366,6 +371,10 @@ class ShellTest {
             {
                 expectedExitCode = s.charAt(expex + "EXPECT EXIT CODE ".length()) - '0';
             }
+        }
+        if (thrown[0] != null)
+        {
+        	status.threw(thrown[0]);
         }
         status.exitCodesWere(expectedExitCode, testState.exitCode);
         if(failures != "")
