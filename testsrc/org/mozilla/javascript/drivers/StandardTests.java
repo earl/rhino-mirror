@@ -38,13 +38,8 @@ package org.mozilla.javascript.drivers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.Properties;
-import java.util.List;
-import java.util.ArrayList;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
