@@ -1687,7 +1687,6 @@ switch (op) {
         frame.savedStackTop = stackTop;
         stack[stackTop] = fun.call(cx, calleeScope, funThisObj, 
                 getArgsArray(stack, sDbl, stackTop + 2, indexReg));
-        cx.lastInterpreterFrame = null;
 
         continue Loop;
     }
@@ -2942,15 +2941,16 @@ switch (op) {
             x = x.parentFrame;
         }
         
-        while (outermost.parentFrame != null)
-            outermost = outermost.parentFrame;
-
-        if (requireContinuationsTopFrame && !outermost.isContinuationsTopFrame)
-        {
-            throw new IllegalStateException("Cannot capture continuation " +
-                    "from JavaScript code not called directly by " +
-                    "executeScriptWithContinuations or " +
-                    "callFunctionWithContinuations");
+        if (requireContinuationsTopFrame) {
+            while (outermost.parentFrame != null)
+                outermost = outermost.parentFrame;
+    
+            if (!outermost.isContinuationsTopFrame) {
+                throw new IllegalStateException("Cannot capture continuation " +
+                        "from JavaScript code not called directly by " +
+                        "executeScriptWithContinuations or " +
+                        "callFunctionWithContinuations");
+            }
         }
         
         c.initImplementation(frame);
