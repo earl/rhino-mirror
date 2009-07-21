@@ -62,7 +62,7 @@ public class StandardTests extends TestSuite
 	public static TestSuite suite() throws Exception
     {
         TestSuite suite = new TestSuite("Standard JavaScript tests");
-        if (DISABLE) {
+        if (!DISABLE) {
             File testDir = null;
             if (System.getProperty("mozilla.js.tests") != null) {
                 testDir = new File(System.getProperty("mozilla.js.tests"));
