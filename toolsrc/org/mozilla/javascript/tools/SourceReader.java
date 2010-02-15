@@ -9,7 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import org.mozilla.javascript.Kit;
-import org.mozilla.javascript.tools.shell.ParsedContentType;
+import org.mozilla.javascript.commonjs.module.provider.ParsedContentType;
 
 /**
  * @author Attila Szegedi
