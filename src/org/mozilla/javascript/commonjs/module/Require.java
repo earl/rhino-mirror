@@ -325,7 +325,10 @@ public class Require extends ScriptableObject implements Function
             }
             return moduleScript;
         }
-        catch(IOException e) {
+        catch(RuntimeException e) {
+            throw e;
+        }
+        catch(Exception e) {
             throw Context.throwAsScriptRuntimeEx(e);
         }
     }

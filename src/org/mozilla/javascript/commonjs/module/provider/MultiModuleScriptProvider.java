@@ -31,7 +31,7 @@ public class MultiModuleScriptProvider implements ModuleScriptProvider
         this.providers = l.toArray(new ModuleScriptProvider[l.size()]);
     }
     
-    public ModuleScript getModuleScript(Context cx, String moduleId, Scriptable paths) throws IOException {
+    public ModuleScript getModuleScript(Context cx, String moduleId, Scriptable paths) throws Exception {
         for (ModuleScriptProvider provider : providers) {
             final ModuleScript script = provider.getModuleScript(cx, moduleId, paths);
             if(script != null) {

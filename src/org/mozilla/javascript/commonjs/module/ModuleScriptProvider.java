@@ -1,7 +1,5 @@
 package org.mozilla.javascript.commonjs.module;
 
-import java.io.IOException;
-
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
 
@@ -27,11 +25,11 @@ public interface ModuleScriptProvider
      * whether and how it wants to honor the contents of the array.
      * @return a module script representing the compiled code of the module. 
      * Null should be returned if the script could not found.
-     * @throws IOException if there was an I/O problem reading the script's 
-     * source.
+     * @throws Exception if there was an unrecoverable problem obtaining the 
+     * script
      * @throws IllegalArgumentException if the module ID is syntactically not a
      * valid absolute module identifier.
      */
     public ModuleScript getModuleScript(Context cx, String moduleId, Scriptable paths) 
-    throws IOException;
+    throws Exception;
 }
