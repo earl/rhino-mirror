@@ -11,6 +11,8 @@ import org.mozilla.javascript.Scriptable;
  * instances of {@link Require} that are identical except for their top-level
  * scope and current {@link Context}. Also useful if you prefer configuring it
  * using named setters instead of passing many parameters in a constructor.
+ * Every setter returns "this", so you can easily chain their invocations for 
+ * additional convenience.
  * @author Attila Szegedi
  * @version $Id$
  */
@@ -28,29 +30,35 @@ public class RequireBuilder implements Serializable
      * that this builder builds.
      * @param moduleScriptProvider the module script provider for the 
      * {@link Require} instances that this builder builds. 
+     * @return this, so you can chain ("fluidize") setter invocations
      */
-    public void setModuleScriptProvider(
+    public RequireBuilder setModuleScriptProvider(
             ModuleScriptProvider moduleScriptProvider)
     {
         this.moduleScriptProvider = moduleScriptProvider;
+        return this;
     }
     
     /**
      * Sets the script that should execute in every module's scope after the
      * module's own script has executed.
      * @param postExec the post-exec script.
+     * @return this, so you can chain ("fluidize") setter invocations
      */
-    public void setPostExec(Script postExec) {
+    public RequireBuilder setPostExec(Script postExec) {
         this.postExec = postExec;
+        return this;
     }
 
     /**
      * Sets the script that should execute in every module's scope before the
      * module's own script has executed.
      * @param preExec the pre-exec script.
+     * @return this, so you can chain ("fluidize") setter invocations
      */
-    public void setPreExec(Script preExec) {
+    public RequireBuilder setPreExec(Script preExec) {
         this.preExec = preExec;
+        return this;
     }
     
     /**
@@ -59,9 +67,11 @@ public class RequireBuilder implements Serializable
      * Script, Script, boolean)} for explanation.
      * @param sandboxed true if the created require() instances will be 
      * sandboxed.
+     * @return this, so you can chain ("fluidize") setter invocations
      */
-    public void setSandboxed(boolean sandboxed) {
+    public RequireBuilder setSandboxed(boolean sandboxed) {
         this.sandboxed = sandboxed;
+        return this;
     }
  
     /**
