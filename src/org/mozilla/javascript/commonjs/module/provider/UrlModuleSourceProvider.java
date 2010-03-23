@@ -353,7 +353,7 @@ public class UrlModuleSourceProvider extends ModuleSourceProviderBase
             if(lastModified != 0L) {
                 urlConnection.setIfModifiedSince(lastModified);
             }
-            if(entityTags != null && !entityTags.isEmpty()) {
+            if(entityTags != null && entityTags.length() > 0) {
                 urlConnection.addRequestProperty("If-None-Match", entityTags);
             }
         }
