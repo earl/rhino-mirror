@@ -1,8 +1,8 @@
 package org.mozilla.javascript.commonjs.module.provider;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.io.Serializable;
+import java.net.URI;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Scriptable;
@@ -58,12 +58,13 @@ implements ModuleScriptProvider, Serializable
     }
 
     public ModuleScript getModuleScript(Context cx, String moduleId, 
-            Scriptable paths) throws IOException
+            URI moduleUri, Scriptable paths) throws Exception
     {
         final CachedModuleScript cachedModule1 = getLoadedModule(moduleId);
         final Object validator1 = getValidator(cachedModule1);
-        final ModuleSource moduleSource = moduleSourceProvider.getModuleSource(
-                moduleId, paths, validator1);
+        final ModuleSource moduleSource = (moduleUri == null)
+                ? moduleSourceProvider.loadSource(moduleId, paths, validator1)
+                : moduleSourceProvider.loadSource(moduleUri, validator1);
         if(moduleSource == ModuleSourceProvider.NOT_MODIFIED) {
             return cachedModule1.getModule();
         }
@@ -80,11 +81,12 @@ implements ModuleScriptProvider, Serializable
                         return cachedModule2.getModule();
                     }
                 }
-                final String uri = moduleSource.getUri();
+                final URI sourceUri = moduleSource.getUri();
                 final ModuleScript moduleScript = new ModuleScript(
-                        cx.compileReader(reader, uri, 1, 
-                                moduleSource.getSecurityDomain()), uri);
-                putLoadedModule(moduleId, moduleScript, 
+                        cx.compileReader(reader, sourceUri.toString(), 1,
+                                moduleSource.getSecurityDomain()),
+                        sourceUri, moduleSource.getBase());
+                putLoadedModule(moduleId, moduleScript,
                         moduleSource.getValidator());
                 return moduleScript;
             }
@@ -93,7 +95,7 @@ implements ModuleScriptProvider, Serializable
             reader.close();
         }
     }
-    
+
     /**
      * Store a loaded module script for later retrieval using 
      * {@link #getLoadedModule(String)}.

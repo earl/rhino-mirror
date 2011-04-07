@@ -2,6 +2,7 @@ package org.mozilla.javascript.commonjs.module.provider;
 
 import java.io.Reader;
 import java.io.Serializable;
+import java.net.URI;
 
 /**
  * Represents the source text of the module as a tuple of a reader, a URI, a 
@@ -30,7 +31,8 @@ public class ModuleSource implements Serializable
 
     private final Reader reader;
     private final Object securityDomain; 
-    private final String uri;
+    private final URI uri;
+    private final URI base;
     private final Object validator;
     
     /**
@@ -42,11 +44,12 @@ public class ModuleSource implements Serializable
      * @param validator a validator that can be used for subsequent cache
      * validation of the source text.
      */
-    public ModuleSource(Reader reader, Object securityDomain, String uri, 
-            Object validator) {
+    public ModuleSource(Reader reader, Object securityDomain, URI uri,
+                        URI base, Object validator) {
         this.reader = reader;
         this.securityDomain = securityDomain;
         this.uri = uri;
+        this.base = base;
         this.validator = validator;
     }
     
@@ -74,8 +77,17 @@ public class ModuleSource implements Serializable
      * Returns the URI of the module source text.
      * @return the URI of the module source text.
      */
-    public String getUri() {
+    public URI getUri() {
         return uri;
+    }
+
+    /**
+     * Returns the base URI from which this module source was loaded, or null
+     * if it was loaded from an absolute URI.
+     * @return the base URI, or null.
+     */
+    public URI getBase() {
+        return base;
     }
 
     /**

@@ -1,6 +1,6 @@
 package org.mozilla.javascript.commonjs.module.provider;
 
-import java.io.IOException;
+import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,9 +31,11 @@ public class MultiModuleScriptProvider implements ModuleScriptProvider
         this.providers = l.toArray(new ModuleScriptProvider[l.size()]);
     }
     
-    public ModuleScript getModuleScript(Context cx, String moduleId, Scriptable paths) throws Exception {
+    public ModuleScript getModuleScript(Context cx, String moduleId, URI uri,
+                                        Scriptable paths) throws Exception {
         for (ModuleScriptProvider provider : providers) {
-            final ModuleScript script = provider.getModuleScript(cx, moduleId, paths);
+            final ModuleScript script = provider.getModuleScript(cx, moduleId,
+                    uri, paths);
             if(script != null) {
                 return script;
             }
